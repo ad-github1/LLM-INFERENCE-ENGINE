@@ -26,10 +26,13 @@ The runnable Python path intentionally uses a deterministic fake backend. That k
 ## Quick Start
 
 ```bash
-cd outputs/llm-inference-engine
+git clone https://github.com/ad-github1/LLM-INFERENCE-ENGINE.git
+cd LLM-INFERENCE-ENGINE
+
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
+
 python -m llm_engine
 python -m llm_engine.benchmark --requests 1000
 python -m unittest discover -s tests
