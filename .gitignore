@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# C++ build files
+build/
+cmake-build-*/
+*.o
+*.so
+*.dylib
+*.exe
+
+# Models / cache / datasets
+models/
+checkpoints/
+*.onnx
+*.pt
+*.pth
+*.safetensors
+.cache/
+data/
+datasets/
+
+# Logs and benchmark outputs
+logs/
+*.log
+benchmark_results/
+*.csv
+
+# Secrets
+.env
+.env.local
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
