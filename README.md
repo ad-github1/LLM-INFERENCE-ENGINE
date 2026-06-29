@@ -121,6 +121,71 @@ The benchmark submits variable-length synthetic requests, runs the continuous ba
 - peak memory utilization.
 - peak internal and external fragmentation.
 
+## Demo Run
+
+```bash
+PYTHONPATH=src python3 -m llm_engine
+```
+
+Sample output:
+
+```text
+metrics: p99_latency_ms=0.371, token_tps=38565.83, peak_memory=40.00%, peak_internal_frag=37.50%
+```
+
+The demo shows prefill/decode scheduling, request interleaving, token emission, and KV-cache block usage across multiple active requests.
+
+## Unit Tests
+
+```bash
+PYTHONPATH=src python3 -m unittest discover -s tests
+```
+
+Result:
+
+```text
+Ran 10 tests in 0.002s
+
+OK
+```
+
+## Benchmark
+
+```bash
+PYTHONPATH=src python3 -m llm_engine.benchmark --requests 1000 --json
+```
+
+Environment:
+
+* Machine: MacBook Air
+* Requests: 1,000 synthetic variable-length inference requests
+* Backend: deterministic local backend
+* Scheduler: continuous batching
+* Max batch size: 32
+
+| Metric                      |                Value |
+| --------------------------- | -------------------: |
+| Submitted requests          |                1,000 |
+| Completed requests          |                1,000 |
+| Failed requests             |                    0 |
+| Request throughput          |     2,360.25 req/sec |
+| Token throughput            | 32,816.96 tokens/sec |
+| Total generated tokens      |               13,904 |
+| Avg batch size              |                30.84 |
+| Max batch size              |                   32 |
+| p50 latency                 |            173.69 ms |
+| p95 latency                 |            374.82 ms |
+| p99 latency                 |            393.44 ms |
+| p50 queue wait              |            160.73 ms |
+| p95 queue wait              |            360.58 ms |
+| p99 queue wait              |            379.15 ms |
+| p99 scheduler step duration |              1.01 ms |
+| Peak memory utilization     |                3.32% |
+| Peak internal fragmentation |               15.79% |
+| Peak external fragmentation |               50.66% |
+
+This benchmark uses a deterministic backend to isolate scheduling, batching, request admission, and KV-cache behavior. Request-level p99 latency includes queue wait time under bursty synthetic load, while scheduler step duration captures per-iteration engine overhead.
+
 ## Optional C++ ONNX Runtime gRPC Backend
 
 The serving loop is isolated from token generation behind `ModelBackend`. A real model adapter would:
